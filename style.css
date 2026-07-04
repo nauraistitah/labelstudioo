@@ -250,6 +250,14 @@
     display: flex; align-items: center; justify-content: center;
     user-select: none;
   }
+  /* Gambar nyata di canvas */
+  #canvasImg {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 5px;
+    pointer-events: none;
+  }
   .canvas-frame .placeholder-icon { font-size: 56px; opacity: .18; pointer-events: none; }
   .canvas-frame .cam-label {
     position: absolute; top: 10px; left: 10px;

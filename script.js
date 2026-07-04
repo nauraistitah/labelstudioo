@@ -8,21 +8,26 @@ const MEMBERS = [
   { name: "athaya.misykah", role: "Manager",   color: "#ff7557" },
 ];
 
-// Nama file dummy: frame CCTV dermaga
-const FILE_NAMES = [
-  "frame_CAM01_160925_0800.jpg",
-  "frame_CAM02_160925_0815.jpg",
-  "frame_CAM03_160925_0830.jpg",
-  "frame_CAM01_160925_0900.jpg",
-  "frame_CAM02_160925_0915.jpg",
-  "frame_CAM03_160925_0930.jpg",
-  "frame_CAM01_160925_1000.jpg",
-  "frame_CAM02_160925_1015.jpg",
-  "frame_CAM03_160925_1030.jpg",
-  "frame_CAM01_160925_1100.jpg",
-  "frame_CAM02_160925_1115.jpg",
-  "frame_CAM03_160925_1130.jpg",
+// ═══════════════════════════════════════
+// DATABASE GAMBAR
+// Path relatif — letakkan img 1.jpg s/d img 4.jpg
+// di folder yang sama dengan file HTML ini.
+// ═══════════════════════════════════════
+const IMAGE_DB = [
+  { file: "img 1.jpg", src: "img 1.jpeg", cam: "CAM-01 · Dermaga Timur" },
+  { file: "img 2.jpg", src: "img 2.jpeg", cam: "CAM-02 · Dermaga Tengah" },
+  { file: "img 3.jpg", src: "img 3.jpeg", cam: "CAM-03 · Dermaga Barat" },
+  { file: "img 4.jpg", src: "img 4.jpeg", cam: "CAM-01 · Dermaga Timur" },
+    { file: "img 1.jpg", src: "img 1.jpeg", cam: "CAM-01 · Dermaga Timur" },
+  { file: "img 2.jpg", src: "img 2.jpeg", cam: "CAM-02 · Dermaga Tengah" },
+  { file: "img 3.jpg", src: "img 3.jpeg", cam: "CAM-03 · Dermaga Barat" },
+  { file: "img 4.jpg", src: "img 4.jpeg", cam: "CAM-01 · Dermaga Timur" },
+    { file: "img 1.jpg", src: "img 1.jpeg", cam: "CAM-01 · Dermaga Timur" },
+  { file: "img 2.jpg", src: "img 2.jpeg", cam: "CAM-02 · Dermaga Tengah" },
+  { file: "img 3.jpg", src: "img 3.jpeg", cam: "CAM-03 · Dermaga Barat" },
+  { file: "img 4.jpg", src: "img 4.jpeg", cam: "CAM-01 · Dermaga Timur" },
 ];
+
 
 const CAM_LABELS = [
   "CAM-01 · Dermaga Timur",
@@ -30,15 +35,21 @@ const CAM_LABELS = [
   "CAM-03 · Dermaga Barat",
 ];
 
-// Buat 12 tasks sesuai laporan
-const tasks = FILE_NAMES.map((fname, i) => {
+// Buat 12 tasks: 4 pertama pakai gambar nyata dari IMAGE_DB
+const tasks = Array.from({ length: 12 }, (_, i) => {
   const memberIdx = i % MEMBERS.length;
-  const isPending = (i % 4 === 0);   // 3 pending (idx 0,4,8), sisanya ready
+  const isPending = (i % 4 === 0);
   const objCount  = 3 + (i % 5);
+
+  // Task 1–4: gunakan gambar dari IMAGE_DB
+  const hasImage = i < IMAGE_DB.length;
+  const dbEntry  = hasImage ? IMAGE_DB[i] : null;
+
   return {
     id        : 8327 + i,
-    file      : fname,
-    camLabel  : CAM_LABELS[i % 3] + " · 16-Sep-2025",
+    file      : hasImage ? dbEntry.file : FILE_NAMES_DUMMY[i - IMAGE_DB.length],
+    src       : hasImage ? dbEntry.src  : null,   // path gambar (null = placeholder)
+    camLabel  : (hasImage ? dbEntry.cam : CAM_LABELS[i % 3]) + " · 16-Sep-2025",
     annotator : MEMBERS[memberIdx].name,
     role      : MEMBERS[memberIdx].role,
     color     : MEMBERS[memberIdx].color,
@@ -100,7 +111,10 @@ function renderTable(filter) {
           <span style="font-size:12px;">${t.annotator}<br><span style="color:var(--text-dim);font-size:11px;">${t.role}</span></span>
         </div>
       </td>
-      <td><div class="thumb-cell">🖼</div></td>
+      <td>${t.src
+        ? `<div class="thumb-cell" style="padding:0;overflow:hidden;"><img src="${t.src}" style="width:100%;height:100%;object-fit:cover;border-radius:5px;" /></div>`
+        : `<div class="thumb-cell">🖼</div>`
+      }</td>
       <td><span class="status-chip ${t.status}">${t.status === 'ready' ? '✓ Ready' : '⏳ Pending'}</span></td>
       <td style="text-align:center;font-size:12px;">${t.objects}</td>
       <td style="color:var(--text-dim);font-size:12px;">${t.time}</td>
@@ -195,6 +209,18 @@ function renderLabeling() {
 
   // Update canvas label
   document.getElementById('camLabel').textContent = t.camLabel;
+
+  // ── Tampilkan gambar atau placeholder ──
+  const canvasImg   = document.getElementById('canvasImg');
+  const placeholder = document.getElementById('canvasPlaceholder');
+  if (t.src) {
+    canvasImg.src              = t.src;
+    canvasImg.style.display    = 'block';
+    placeholder.style.display  = 'none';
+  } else {
+    canvasImg.style.display    = 'none';
+    placeholder.style.display  = 'flex';
+  }
 
   // Clear existing bboxes
   document.querySelectorAll('#canvasFrame .bbox').forEach(b => b.remove());
