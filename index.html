@@ -11,10 +11,13 @@
 <!-- Toast -->
 <div id="toast"></div>
 
+<!-- Sidebar overlay (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <!-- ── Rail ── -->
 <div class="rail">
   <div class="logo">LS</div>
-  <div class="icon active" id="railProjects" title="Projects">🗂</div>
+  <div class="icon active" title="Projects">🗂</div>
   <div class="icon" title="Organisasi">👥</div>
   <div class="spacer"></div>
   <div class="icon" title="Pengaturan Akun">⚙</div>
@@ -28,16 +31,10 @@
   <div class="nav-item active" data-view="dm"><span class="dot"></span>Data Manager</div>
   <div class="nav-item" data-view="settings"><span class="dot"></span>Pengaturan Proyek</div>
   <div class="nav-item" data-view="members"><span class="dot"></span>Anggota Tim</div>
-
   <hr class="divider" style="margin-top:16px;">
-
   <div class="proj-card-mini">
     <div class="pname">🛟 Deteksi Person &amp; Life Vest</div>
-    <div class="pmeta">
-      12 tasks total<br>
-      9 Ready &nbsp;·&nbsp; 3 Pending<br>
-      Dermaga · Sep–Okt 2025
-    </div>
+    <div class="pmeta" id="sidebarMeta">12 tasks total<br>9 Ready · 3 Pending<br>Dermaga · Sep–Okt 2025</div>
     <span class="pbadge">Object Detection</span>
   </div>
 </div>
@@ -47,6 +44,7 @@
 
   <!-- Topbar -->
   <div class="topbar">
+    <button class="hamburger" id="hamburger" title="Menu">☰</button>
     <div class="title">🛟 Deteksi Person &amp; Life Vest</div>
     <div class="tabs">
       <div class="tab active" data-view="dm">Data Manager</div>
@@ -54,37 +52,28 @@
       <div class="tab" data-view="members">Members</div>
     </div>
     <div class="right">
-      <button class="btn btn-ghost">⬆ Import</button>
-      <button class="btn btn-ghost">⬇ Export</button>
-      <button class="btn btn-primary" id="labelAllBtn">▶ Label All Tasks</button>
+      <button class="btn btn-ghost" id="importBtn">⬆ Import</button>
+      <button class="btn btn-ghost" id="exportBtn">⬇ Export</button>
+      <button class="btn btn-primary" id="labelAllBtn">▶ Label</button>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       VIEW: PROJECTS
-  ══════════════════════════════════════════ -->
+  <!-- ══ VIEW: PROJECTS ══ -->
   <div class="view" id="view-projects">
     <h1 class="page-title">Proyek Saya</h1>
     <div class="page-sub">Pilih proyek untuk mulai melabeli data, atau buat proyek baru.</div>
-
-    <div class="dm-toolbar" style="margin-top:16px;">
+    <div class="dm-toolbar" style="margin-top:12px;">
       <div class="search-box">🔍 <input placeholder="Cari proyek..."></div>
       <button class="btn btn-primary">＋ Proyek Baru</button>
     </div>
-
     <div class="projects-grid">
-
-      <!-- Proyek aktif PKL -->
       <div class="pcard" data-open="dm" style="border-color:var(--accent-2);">
         <div class="thumb active-proj">🛟</div>
         <div class="pname">Deteksi Person &amp; Life Vest</div>
-        <div class="pmeta">
-          12 tasks &nbsp;·&nbsp; Dermaga RU V<br>
-          Diubah: 31 Okt 2025
-        </div>
+        <div class="pmeta">12 tasks · Dermaga RU V<br>Diubah: 31 Okt 2025</div>
         <div class="prog-wrap">
-          <div class="prog-bar"><div class="prog-fill" style="width:75%"></div></div>
-          <div class="prog-label">9 / 12 tasks selesai (75%)</div>
+          <div class="prog-bar"><div class="prog-fill" id="projProgFill" style="width:75%"></div></div>
+          <div class="prog-label" id="projProgLabel">9 / 12 tasks selesai (75%)</div>
         </div>
         <div class="ptags">
           <span class="ptag">Object Detection</span>
@@ -92,153 +81,138 @@
           <span class="ptag">Safety APD</span>
         </div>
       </div>
-
       <div class="pcard">
         <div class="thumb">🚗</div>
         <div class="pname">Deteksi Kendaraan Pelabuhan</div>
-        <div class="pmeta">340 tasks &nbsp;·&nbsp; Diubah: 02 Jun 2026</div>
+        <div class="pmeta">340 tasks · Diubah: 02 Jun 2026</div>
         <div class="prog-wrap">
           <div class="prog-bar"><div class="prog-fill" style="width:42%"></div></div>
-          <div class="prog-label">143 / 340 tasks selesai (42%)</div>
+          <div class="prog-label">143 / 340 tasks (42%)</div>
         </div>
         <div class="ptags"><span class="ptag">Object Detection</span></div>
       </div>
-
       <div class="pcard">
         <div class="thumb">📝</div>
         <div class="pname">Klasifikasi Sentimen Ulasan</div>
-        <div class="pmeta">1.204 tasks &nbsp;·&nbsp; Diubah: 20 Mei 2026</div>
+        <div class="pmeta">1.204 tasks · Diubah: 20 Mei 2026</div>
         <div class="prog-wrap">
           <div class="prog-bar"><div class="prog-fill" style="width:89%"></div></div>
-          <div class="prog-label">1.072 / 1.204 tasks selesai (89%)</div>
+          <div class="prog-label">1.072 / 1.204 tasks (89%)</div>
         </div>
         <div class="ptags"><span class="ptag">Text Classification</span></div>
       </div>
-
       <div class="pcard">
         <div class="thumb">🔊</div>
         <div class="pname">Transkripsi Audio Panggilan</div>
-        <div class="pmeta">58 tasks &nbsp;·&nbsp; Diubah: 11 Apr 2026</div>
+        <div class="pmeta">58 tasks · Diubah: 11 Apr 2026</div>
         <div class="prog-wrap">
           <div class="prog-bar"><div class="prog-fill" style="width:20%"></div></div>
-          <div class="prog-label">12 / 58 tasks selesai (20%)</div>
+          <div class="prog-label">12 / 58 tasks (20%)</div>
         </div>
         <div class="ptags"><span class="ptag">Audio</span><span class="ptag">ASR</span></div>
       </div>
-
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       VIEW: DATA MANAGER
-  ══════════════════════════════════════════ -->
+  <!-- ══ VIEW: DATA MANAGER ══ -->
   <div class="view shown" id="view-dm">
     <h1 class="page-title">Data Manager</h1>
-    <div class="page-sub">
+    <div class="page-sub" id="dmSub">
       12 tasks &nbsp;·&nbsp;
       <b style="color:var(--green)">9 Ready</b> &nbsp;·&nbsp;
       <b style="color:var(--yellow)">3 Pending</b>
-      &nbsp;·&nbsp; Sumber: /data/cctv-dermaga/
+      &nbsp;·&nbsp; /data/cctv-dermaga/
     </div>
-
     <div class="dm-toolbar">
-      <div class="search-box">🔍 <input id="dmSearch" placeholder="Cari berdasarkan ID, nama file, atau annotator..."></div>
+      <div class="search-box">🔍 <input id="dmSearch" placeholder="Cari ID, nama file, annotator..."></div>
       <div class="pill on" data-filter="all">Semua</div>
       <div class="pill" data-filter="ready">Ready</div>
       <div class="pill" data-filter="pending">Pending</div>
-      <div class="pill">Filter ⌄</div>
-      <div class="pill">Urutkan ⌄</div>
     </div>
-
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th style="width:32px;"><input type="checkbox" id="checkAll"></th>
-            <th>ID Task</th>
+            <th style="width:30px;"><input type="checkbox" id="checkAll"></th>
+            <th>ID</th>
             <th>Nama File</th>
             <th>Annotated By</th>
             <th>Preview</th>
             <th>Status</th>
-            <th>Objek</th>
+            <th>Obj</th>
             <th>Diperbarui</th>
           </tr>
         </thead>
         <tbody id="dataRows"></tbody>
       </table>
     </div>
-
     <div class="pagination">
-      <span id="paginationInfo">Menampilkan 1–12 dari 12 tasks</span>
-      <button>‹</button><button style="background:var(--panel-2);color:var(--text);">1</button><button>›</button>
+      <span id="paginationInfo"></span>
+      <button id="pgPrev">‹</button>
+      <span id="pgLabel" style="font-size:12px;color:var(--text);">1</span>
+      <button id="pgNext">›</button>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       VIEW: LABELING
-  ══════════════════════════════════════════ -->
+  <!-- ══ VIEW: LABELING ══ -->
   <div class="view" id="view-labeling">
     <div class="label-wrap">
 
-      <!-- Canvas area -->
+      <!-- Canvas -->
       <div class="label-stage">
         <div class="stage-toolbar">
-          <div class="ticon active" title="Bounding Box">▭</div>
-          <div class="ticon" title="Pan / Geser">✋</div>
-          <div class="ticon" title="Perbesar">＋</div>
-          <div class="ticon" title="Perkecil">－</div>
-          <div class="ticon" title="Reset Zoom">⟲</div>
-          <div class="ticon" title="Tampilkan semua anotasi">👁</div>
+          <div class="ticon active" id="toolDraw" title="Gambar Bounding Box [B]">▭</div>
+          <div class="ticon" id="toolPan" title="Pan / Geser [V]">✋</div>
+          <div class="ticon" id="toolZoomIn" title="Zoom In [+]">＋</div>
+          <div class="ticon" id="toolZoomOut" title="Zoom Out [−]">－</div>
+          <div class="ticon" id="toolReset" title="Reset Zoom [R]">⟲</div>
+          <div class="ticon" id="toolToggle" title="Sembunyikan/Tampilkan Anotasi [H]">👁</div>
         </div>
 
         <div class="canvas-frame" id="canvasFrame">
-          <!-- Gambar nyata (task 1–4 dari IMAGE_DB) -->
           <img id="canvasImg" src="" alt="frame CCTV" style="display:none;" />
-          <!-- Placeholder untuk task tanpa gambar -->
-          <div id="canvasPlaceholder" class="placeholder-icon">🖼</div>
-          <div class="cam-label" id="camLabel">CAM-03 · Dermaga Barat · 16-Sep-2025</div>
-          <!-- bounding boxes diinjeksi oleh JS -->
+          <div id="canvasPlaceholder">🖼</div>
+          <div class="cam-label" id="camLabel">CAM-01 · Dermaga · 16-Sep-2025</div>
+          <!-- bboxes & draw ghost injected by JS -->
         </div>
 
         <div class="stage-nav">
-          <button id="prevTask">‹ Sebelumnya</button>
+          <button id="prevTask">‹</button>
           <span class="count" id="taskCount">Task 1 / 12</span>
-          <button id="nextTask">Selanjutnya ›</button>
+          <button id="nextTask">›</button>
         </div>
       </div>
 
       <!-- Info panel -->
       <div class="info-panel">
-        <button class="btn btn-ghost" id="backFromLabel" style="align-self:flex-start;font-size:12px;">← Data Manager</button>
+        <button class="btn btn-ghost" id="backFromLabel" style="align-self:flex-start;font-size:11px;">← Data Manager</button>
 
         <!-- Label set -->
         <div>
-          <h3 style="margin-bottom:10px;">Label Set</h3>
-          <div class="labelset">
-            <div class="label-btn selected"><span class="sw" style="background:var(--accent-2);"></span>Person</div>
-            <div class="label-btn"><span class="sw" style="background:var(--green);"></span>Life Vest: On</div>
-            <div class="label-btn"><span class="sw" style="background:var(--red);"></span>Life Vest: Off</div>
+          <h3 style="margin-bottom:8px;">Label Set <span style="font-size:9px;color:var(--text-dim);">(klik untuk memilih)</span></h3>
+          <div class="labelset" id="labelset">
+            <div class="label-btn selected" data-type="person"><span class="sw" style="background:var(--accent-2);"></span>Person</div>
+            <div class="label-btn" data-type="vest-on"><span class="sw" style="background:var(--green);"></span>Life Vest: On</div>
+            <div class="label-btn" data-type="vest-off"><span class="sw" style="background:var(--red);"></span>Life Vest: Off</div>
           </div>
-          <div style="font-size:11px;color:var(--text-dim);margin-top:8px;">
-            Klik label untuk mengganti kelas anotasi aktif.
+          <div style="font-size:10px;color:var(--text-dim);margin-top:6px;">
+            Klik &amp; drag di canvas untuk menambah bbox. Klik ✕ pada bbox untuk hapus.
           </div>
         </div>
 
         <!-- Regions -->
         <div>
-          <h3 style="margin-bottom:10px;">Regions &nbsp;<span id="regionCount" style="font-style:normal;color:var(--text);">0</span></h3>
-          <div id="regionList" style="display:flex;flex-direction:column;gap:7px;"></div>
+          <h3 style="margin-bottom:8px;">Regions <span id="regionCount" style="font-style:normal;color:var(--text);">0</span></h3>
+          <div id="regionList" style="display:flex;flex-direction:column;gap:6px;"></div>
         </div>
 
         <!-- Task Info -->
         <div>
-          <h3 style="margin-bottom:10px;">Task Info</h3>
+          <h3 style="margin-bottom:8px;">Task Info</h3>
           <div class="meta-line"><span>ID Task</span><b id="infoId">-</b></div>
-          <div class="meta-line" style="margin-top:6px;"><span>Nama File</span><b id="infoFile" style="font-size:11px;">-</b></div>
-          <div class="meta-line" style="margin-top:6px;"><span>Annotator</span><b id="infoAnnotator">-</b></div>
-          <div class="meta-line" style="margin-top:6px;"><span>Peran</span><b id="infoRole">-</b></div>
-          <div class="meta-line" style="margin-top:6px;"><span>Status</span><b id="infoStatus">-</b></div>
-          <div class="meta-line" style="margin-top:6px;"><span>Diperbarui</span><b id="infoTime" style="font-size:11px;">-</b></div>
+          <div class="meta-line" style="margin-top:5px;"><span>Nama File</span><b id="infoFile" style="font-size:10px;">-</b></div>
+          <div class="meta-line" style="margin-top:5px;"><span>Annotator</span><b id="infoAnnotator">-</b></div>
+          <div class="meta-line" style="margin-top:5px;"><span>Status</span><b id="infoStatus">-</b></div>
         </div>
 
         <!-- Submit -->
@@ -250,14 +224,11 @@
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       VIEW: SETTINGS
-  ══════════════════════════════════════════ -->
+  <!-- ══ VIEW: SETTINGS ══ -->
   <div class="view" id="view-settings">
     <h1 class="page-title">Settings</h1>
     <div class="page-sub">Konfigurasi proyek, antarmuka labeling, dan integrasi data.</div>
-
-    <div class="settings-layout" style="margin-top:18px;">
+    <div class="settings-layout" style="margin-top:16px;">
       <div class="settings-nav">
         <div class="s-item active" data-pane="general">General</div>
         <div class="s-item" data-pane="labeling">Labeling Interface</div>
@@ -266,183 +237,120 @@
         <div class="s-item" data-pane="storage">Cloud Storage</div>
         <div class="s-item" data-pane="danger">Danger Zone</div>
       </div>
-
       <div class="settings-body">
-
-        <!-- General -->
         <div class="settings-pane" id="pane-general">
           <div class="card-section">
             <h4>Informasi Umum</h4>
-            <div class="field">
-              <label>Nama Proyek</label>
-              <input value="Deteksi Person &amp; Life Vest">
-            </div>
-            <div class="field">
-              <label>Deskripsi</label>
-              <textarea rows="3">Proyek anotasi untuk mendeteksi orang dan status penggunaan life vest pada citra CCTV area dermaga PT Kilang Pertamina Balikpapan (RU V).</textarea>
-            </div>
-            <div class="field">
-              <label>Periode PKL</label>
-              <input value="09 September 2025 – 31 Oktober 2025" readonly style="color:var(--text-dim);">
-            </div>
-            <div class="field">
-              <label>Dibuat oleh</label>
-              <input value="Naura Istitah Muhtasyam · 225150701111021" readonly style="color:var(--text-dim);">
-            </div>
+            <div class="field"><label>Nama Proyek</label><input value="Deteksi Person &amp; Life Vest"></div>
+            <div class="field"><label>Deskripsi</label><textarea rows="3">Proyek anotasi untuk mendeteksi orang dan status penggunaan life vest pada citra CCTV area dermaga PT Kilang Pertamina Balikpapan (RU V).</textarea></div>
+            <div class="field"><label>Periode PKL</label><input value="09 September 2025 – 31 Oktober 2025" readonly style="color:var(--text-dim);"></div>
+            <div class="field"><label>Dibuat oleh</label><input value="Naura Istitah Muhtasyam · 225150701111021" readonly style="color:var(--text-dim);"></div>
             <button class="btn btn-primary" onclick="showToast('Perubahan berhasil disimpan ✓')">Simpan Perubahan</button>
           </div>
         </div>
-
-        <!-- Labeling Interface -->
         <div class="settings-pane" id="pane-labeling" style="display:none;">
           <div class="card-section">
-            <h4>Konfigurasi Antarmuka Labeling</h4>
-            <div class="section-desc">
-              Tentukan tipe anotasi dan daftar label yang akan digunakan pada Labeling View.
-            </div>
-            <div class="field">
-              <label>Tipe Anotasi</label>
-              <input value="Bounding Box — Object Detection">
-            </div>
+            <h4>Konfigurasi Labeling Interface</h4>
+            <div class="field"><label>Tipe Anotasi</label><input value="Bounding Box — Object Detection"></div>
             <div class="field">
               <label>Daftar Label &amp; Kode Warna</label>
-              <div class="labelset" style="margin-top:8px;">
+              <div class="labelset" style="margin-top:7px;">
                 <div class="label-btn"><span class="sw" style="background:var(--accent-2);"></span>Person</div>
                 <div class="label-btn"><span class="sw" style="background:var(--green);"></span>Life Vest: On</div>
                 <div class="label-btn"><span class="sw" style="background:var(--red);"></span>Life Vest: Off</div>
-                <div class="label-btn" style="border-style:dashed;color:var(--text-dim);">＋ Tambah Label</div>
               </div>
-              <div class="hint">
-                Person → Biru (#4A90D9) &nbsp;|&nbsp; Life Vest: On → Hijau (#27AE60) &nbsp;|&nbsp; Life Vest: Off → Merah (#E74C3C)
-              </div>
+              <div class="hint">Person → Biru (#4A90D9) | Life Vest: On → Hijau (#27AE60) | Life Vest: Off → Merah (#E74C3C)</div>
             </div>
-            <div class="field">
-              <label>Tema Antarmuka</label>
-              <input value="Dark Theme">
-              <div class="hint">Tema gelap dipilih untuk kenyamanan penggunaan jangka panjang oleh operator.</div>
-            </div>
+            <div class="field"><label>Tema Antarmuka</label><input value="Dark Theme"></div>
           </div>
         </div>
-
-        <!-- Annotation -->
         <div class="settings-pane" id="pane-annotation" style="display:none;">
           <div class="card-section">
             <h4>Aturan Anotasi</h4>
-            <div class="section-desc">
-              Pengaturan ini menentukan bagaimana proses anotasi dilaksanakan oleh tim.
-            </div>
-            <div class="field">
-              <label>Minimum Annotator per Task</label>
-              <input value="1">
-              <div class="hint">Setiap task harus diselesaikan oleh minimal 1 annotator sebelum dapat di-review.</div>
-            </div>
-            <div class="field">
-              <label>Mode Review</label>
-              <input value="Manual review oleh Reviewer setelah Submit">
-            </div>
-            <div class="field">
-              <label>Aturan Bounding Box</label>
-              <textarea rows="4" readonly style="color:var(--text-dim);font-size:12px;">1. Setiap individu WAJIB diberi label Person terlebih dahulu.
+            <div class="field"><label>Min. Annotator per Task</label><input value="1"></div>
+            <div class="field"><label>Mode Review</label><input value="Manual review oleh Reviewer setelah Submit"></div>
+            <div class="field"><label>Aturan Bounding Box</label>
+              <textarea rows="4" readonly style="color:var(--text-dim);font-size:11px;">1. Setiap individu WAJIB diberi label Person terlebih dahulu.
 2. Label Life Vest: On / Off diberikan sebagai anotasi status APD.
-3. Jika status life vest tidak teridentifikasi (blur/terhalang), kolom status boleh dikosongkan.
-4. Bounding box harus melingkupi seluruh tubuh yang terlihat secara presisi.</textarea>
-            </div>
+3. Jika status life vest tidak teridentifikasi (blur/terhalang), status boleh dikosongkan.
+4. Bounding box harus melingkupi seluruh tubuh yang terlihat secara presisi.</textarea></div>
             <button class="btn btn-primary" onclick="showToast('Aturan anotasi disimpan ✓')">Simpan</button>
           </div>
         </div>
-
-        <!-- Model -->
         <div class="settings-pane" id="pane-ml" style="display:none;">
           <div class="card-section">
             <h4>Model Backend</h4>
-            <div class="section-desc">Hubungkan model machine learning untuk pre-labeling otomatis.</div>
-            <div style="color:var(--text-dim);font-size:13px;padding:16px 0;text-align:center;">
-              Belum ada model yang terhubung ke proyek ini.
-            </div>
+            <div class="section-desc">Hubungkan model ML untuk pre-labeling otomatis.</div>
+            <div style="color:var(--text-dim);font-size:12px;padding:14px 0;text-align:center;">Belum ada model yang terhubung.</div>
             <button class="btn btn-ghost">＋ Hubungkan Model</button>
           </div>
         </div>
-
-        <!-- Cloud Storage -->
         <div class="settings-pane" id="pane-storage" style="display:none;">
           <div class="card-section">
             <h4>Sumber Data</h4>
-            <div class="section-desc">Konfigurasi sumber data gambar yang akan dianotasi.</div>
-            <div class="field">
-              <label>Tipe Storage</label>
-              <input value="Local File System">
-            </div>
-            <div class="field">
-              <label>Path Data</label>
-              <input value="/data/cctv-dermaga/">
-              <div class="hint">Frame hasil ekstraksi rekaman kamera CCTV area dermaga PT Kilang Pertamina RU V.</div>
-            </div>
+            <div class="field"><label>Tipe Storage</label><input value="Local File System"></div>
+            <div class="field"><label>Path Data</label><input value="/data/cctv-dermaga/"><div class="hint">Frame hasil ekstraksi rekaman CCTV dermaga PT Kilang Pertamina RU V.</div></div>
             <button class="btn btn-ghost">＋ Tambah Storage</button>
           </div>
         </div>
-
-        <!-- Danger Zone -->
         <div class="settings-pane" id="pane-danger" style="display:none;">
           <div class="card-section">
             <h4 style="color:var(--red);">⚠ Danger Zone</h4>
             <div class="section-desc">Tindakan berikut bersifat permanen dan tidak dapat dibatalkan.</div>
-            <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+            <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;">
               <button class="btn danger" onclick="showToast('⚠ Tindakan ini tidak dapat dibatalkan.')">Hapus Semua Anotasi</button>
               <button class="btn danger" onclick="showToast('⚠ Tindakan ini tidak dapat dibatalkan.')">Hapus Proyek</button>
             </div>
           </div>
         </div>
-
-      </div><!-- /.settings-body -->
-    </div><!-- /.settings-layout -->
+      </div>
+    </div>
   </div>
 
-  <!-- ══════════════════════════════════════════
-       VIEW: MEMBERS
-  ══════════════════════════════════════════ -->
+  <!-- ══ VIEW: MEMBERS ══ -->
   <div class="view" id="view-members">
     <h1 class="page-title">Anggota Tim</h1>
     <div class="page-sub">Kelola siapa yang dapat mengakses dan melabeli proyek ini.</div>
-
-    <div class="card-section" style="margin-top:18px;max-width:660px;">
+    <div class="card-section" style="margin-top:16px;max-width:600px;">
       <h4 style="margin-bottom:0;">3 Anggota Terdaftar</h4>
       <hr class="divider">
-
-      <!-- Naura — Annotator -->
       <div class="members-row">
         <div class="avatar" style="background:var(--accent-2);">NA</div>
-        <div>
-          <div class="mname">naura.isitah</div>
-          <div class="memail">naura.isitah@gmail.com &nbsp;·&nbsp; Bergabung 09 Sep 2025</div>
-        </div>
+        <div><div class="mname">naura.isitah</div><div class="memail">naura.isitah@gmail.com · Bergabung 09 Sep 2025</div></div>
         <span class="role-pill">Annotator</span>
       </div>
-
-      <!-- Rayyan — Reviewer -->
       <div class="members-row">
         <div class="avatar" style="background:var(--green);">RG</div>
-        <div>
-          <div class="mname">rayyan.gibran</div>
-          <div class="memail">rayyan.gibran@gmail.com &nbsp;·&nbsp; Bergabung 09 Sep 2025</div>
-        </div>
+        <div><div class="mname">rayyan.gibran</div><div class="memail">rayyan.gibran@gmail.com · Bergabung 09 Sep 2025</div></div>
         <span class="role-pill reviewer">Reviewer</span>
       </div>
-
-      <!-- Athaya — Manager -->
       <div class="members-row">
         <div class="avatar" style="background:var(--accent);">AM</div>
-        <div>
-          <div class="mname">athaya.misykah</div>
-          <div class="memail">athaya.misykah@gmail.com &nbsp;·&nbsp; Bergabung 09 Sep 2025</div>
-        </div>
+        <div><div class="mname">athaya.misykah</div><div class="memail">athaya.misykah@gmail.com · Bergabung 09 Sep 2025</div></div>
         <span class="role-pill manager">Manager</span>
       </div>
     </div>
-
-    <button class="btn btn-primary" style="margin-top:16px;" onclick="showToast('Undangan berhasil dikirim ✓')">＋ Undang Anggota</button>
+    <button class="btn btn-primary" style="margin-top:14px;" onclick="showToast('Undangan berhasil dikirim ✓')">＋ Undang Anggota</button>
   </div>
 
 </div><!-- /.main -->
+
+<!-- ══ IMPORT MODAL ══ -->
+<div class="modal-overlay hidden" id="importModal">
+  <div class="modal">
+    <h3>⬆ Import Data</h3>
+    <p style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">Upload gambar (JPG/PNG) untuk ditambahkan sebagai task baru.</p>
+    <label class="drop-zone" id="dropZone">
+      <input type="file" id="fileInput" accept="image/*" multiple />
+      <div id="dropText">📂 Drag &amp; drop gambar di sini, atau klik untuk memilih file</div>
+    </label>
+    <div id="importPreview" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" id="importCancel">Batal</button>
+      <button class="btn btn-primary" id="importConfirm">Import Task</button>
+    </div>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
