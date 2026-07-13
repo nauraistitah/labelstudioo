@@ -154,6 +154,9 @@ function renderTable() {
       <td><span class="status-chip ${t.status}">${t.status === 'ready' ? '✓ Ready' : '⏳ Pending'}</span></td>
       <td style="text-align:center;font-size:11px;">${t.annotations.length}</td>
       <td style="color:var(--text-dim);font-size:11px;">${t.time}</td>
+      <td style="text-align:center;">
+        <button class="row-del-btn" title="Hapus task ini" onclick="event.stopPropagation(); confirmDeleteTask(${t.id})">🗑</button>
+      </td>
     </tr>`;
   }).join('');
 
@@ -164,6 +167,24 @@ function renderTable() {
   tbody.querySelectorAll('tr').forEach(row => {
     row.addEventListener('click', () => openLabeling(parseInt(row.dataset.idx)));
   });
+}
+
+// ── Hapus satu task/data ──
+function confirmDeleteTask(id) {
+  const t = tasks.find(x => x.id === id);
+  if (!t) return;
+  const ok = window.confirm(`Hapus task "${t.file}" (ID ${t.id})? Tindakan ini tidak bisa dibatalkan.`);
+  if (ok) deleteTask(id);
+}
+
+function deleteTask(id) {
+  const idx = tasks.findIndex(x => x.id === id);
+  if (idx === -1) return;
+  const removed = tasks.splice(idx, 1)[0];
+  if (removed._imported && removed._blobUrl) URL.revokeObjectURL(removed._blobUrl);
+  renderTable();
+  updateStats();
+  showToast(`🗑 Task "${removed.file}" berhasil dihapus`);
 }
 
 document.querySelectorAll('[data-filter]').forEach(pill => {
@@ -509,16 +530,20 @@ function handleFiles(files) {
   pendingImports = files;
   importPreview.innerHTML = '';
   document.getElementById('dropText').textContent = `${files.length} file dipilih`;
+
   files.slice(0, 8).forEach(f => {
     const url = URL.createObjectURL(f);
-    const img = document.createElement('img');
-    img.src = url;
-    img.style.cssText = 'width:70px;height:50px;object-fit:cover;border-radius:5px;border:1px solid var(--border);';
-    importPreview.appendChild(img);
+    const card = document.createElement('div');
+    card.className = 'import-thumb';
+    card.innerHTML = `
+      <img src="${url}" alt="${f.name}" />
+      <span class="import-thumb-name" title="${f.name}">${f.name}</span>`;
+    importPreview.appendChild(card);
   });
+
   if (files.length > 8) {
     const more = document.createElement('div');
-    more.style.cssText = 'display:flex;align-items:center;font-size:11px;color:var(--text-dim);';
+    more.className = 'import-thumb-more';
     more.textContent = `+${files.length - 8} lainnya`;
     importPreview.appendChild(more);
   }

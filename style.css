@@ -222,6 +222,12 @@ tbody tr:last-child td { border-bottom: none; }
 .status-chip { font-size: 10px; padding: 3px 8px; border-radius: 11px; font-weight: 600; }
 .status-chip.ready   { background: #16332a; color: var(--green); }
 .status-chip.pending { background: #332a16; color: var(--yellow); }
+.row-del-btn {
+  background: transparent; border: 1px solid var(--border); border-radius: 6px;
+  width: 26px; height: 26px; font-size: 12px; line-height: 1; cursor: pointer;
+  color: var(--text-dim); transition: .15s;
+}
+.row-del-btn:hover { background: #3a1a1a; border-color: #E74C3C; color: #E74C3C; }
 .avatar {
   width: 24px; height: 24px; border-radius: 50%;
   display: inline-flex; align-items: center; justify-content: center;
@@ -458,6 +464,30 @@ tbody tr:last-child td { border-bottom: none; }
 }
 .modal .drop-zone input[type=file] { display: none; }
 .modal-footer { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+
+.import-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+}
+.import-thumb {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+.import-thumb img {
+  width: 100%; aspect-ratio: 4 / 3; object-fit: cover;
+  border-radius: 6px; border: 1px solid var(--border);
+  display: block;
+}
+.import-thumb-name {
+  font-size: 9px; color: var(--text-dim); text-align: center;
+  width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.import-thumb-more {
+  display: flex; align-items: center; justify-content: center;
+  aspect-ratio: 4 / 3; border-radius: 6px; border: 1px dashed var(--border);
+  font-size: 11px; color: var(--text-dim);
+}
 
 /* ── Toast ── */
 #toast {
